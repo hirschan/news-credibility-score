@@ -242,6 +242,15 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
       const reportingValue = match["Objective Reporting"];
       const accuracyValue = match["Accuracy"];
 
+      // Remove "/ 6" or "/ 3" if value is N/A
+      const reportingDisplay = reportingValue === "N/A"
+        ? "Factual Reporting: N/A"
+        : `Factual Reporting: ${reportingValue} / 6`;
+
+      const accuracyDisplay = accuracyValue === "N/A"
+        ? "Credibility: N/A"
+        : `Credibility: ${accuracyValue} / 3`;
+
       const reportingColor = reportingColors[reportingValue] || "#fff";
       const accuracyColor = accuracyColors[accuracyValue] || "#fff";
 
@@ -255,10 +264,10 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
     </span>
   <span>
     <span style="color: ${reportingColor}; font-weight: bold;">
-      Factual Reporting: ${reportingValue} / 6
+      ${reportingDisplay}
     </span><br>
     <span style="color: ${accuracyColor}; font-weight: bold;">
-      Credibility: ${accuracyValue} / 3
+      ${accuracyDisplay}
     </span><br>
     <a href="#" class="go-to-source" style="color: #4ea3ff; text-decoration: underline; cursor: pointer;">
       Source
