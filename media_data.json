@@ -8911,13 +8911,6 @@
         "Accuracy": 3
     },
     {
-        "Rating URL": "https://mediabiasfactcheck.com/politifeed/",
-        "URL": "Dead",
-        "Country": "USA",
-        "Objective Reporting": 3,
-        "Accuracy": 2
-    },
-    {
         "Rating URL": "https://mediabiasfactcheck.com/politizoom/",
         "URL": "politizoom.com",
         "Country": "USA",
@@ -17927,13 +17920,6 @@
         "Accuracy": 3
     },
     {
-        "Rating URL": "https://mediabiasfactcheck.com/broken-world-news/",
-        "URL": "Dead",
-        "Country": "Unknown",
-        "Objective Reporting": "N/A",
-        "Accuracy": "N/A"
-    },
-    {
         "Rating URL": "https://mediabiasfactcheck.com/brookings-institute/",
         "URL": "brookings.edu",
         "Country": "USA",
@@ -18333,13 +18319,6 @@
         "Accuracy": 3
     },
     {
-        "Rating URL": "https://mediabiasfactcheck.com/carbonated-tv/",
-        "URL": "Dead",
-        "Country": "Unknown",
-        "Objective Reporting": 5,
-        "Accuracy": 3
-    },
-    {
         "Rating URL": "https://mediabiasfactcheck.com/cardinal-pine-bias/",
         "URL": "cardinalpine.com",
         "Country": "USA",
@@ -18464,13 +18443,6 @@
         "Country": "USA",
         "Objective Reporting": 5,
         "Accuracy": 3
-    },
-    {
-        "Rating URL": "https://mediabiasfactcheck.com/cbsnews-com-co/",
-        "URL": "Dead",
-        "Country": "Unknown",
-        "Objective Reporting": 1,
-        "Accuracy": 1
     },
     {
         "Rating URL": "https://mediabiasfactcheck.com/ccn-markets-bias-rating/",
@@ -18737,13 +18709,6 @@
         "Country": "USA",
         "Objective Reporting": 3,
         "Accuracy": 1
-    },
-    {
-        "Rating URL": "https://mediabiasfactcheck.com/certified-politics/",
-        "URL": "Dead",
-        "Country": "Unknown",
-        "Objective Reporting": 3,
-        "Accuracy": 2
     },
     {
         "Rating URL": "https://mediabiasfactcheck.com/chalkbeat-bias/",
@@ -19430,20 +19395,6 @@
         "Country": "USA",
         "Objective Reporting": 4,
         "Accuracy": 3
-    },
-    {
-        "Rating URL": "https://mediabiasfactcheck.com/cnn-globalnews-com/",
-        "URL": "Dead",
-        "Country": "Unknown",
-        "Objective Reporting": 1,
-        "Accuracy": 1
-    },
-    {
-        "Rating URL": "https://mediabiasfactcheck.com/cnn-com-de/",
-        "URL": "Dead",
-        "Country": "Unknown",
-        "Objective Reporting": 1,
-        "Accuracy": 1
     },
     {
         "Rating URL": "https://mediabiasfactcheck.com/cns-news/",
@@ -24127,13 +24078,6 @@
         "Country": "USA",
         "Objective Reporting": 6,
         "Accuracy": 3
-    },
-    {
-        "Rating URL": "https://mediabiasfactcheck.com/jew-watch/",
-        "URL": "Dead",
-        "Country": "USA",
-        "Objective Reporting": 2,
-        "Accuracy": 1
     },
     {
         "Rating URL": "https://mediabiasfactcheck.com/jewish-breaking-news/",
@@ -45626,13 +45570,6 @@
         "Accuracy": 2
     },
     {
-        "Rating URL": "https://mediabiasfactcheck.com/return-to-now/",
-        "URL": "DEAd",
-        "Country": "USA",
-        "Objective Reporting": 2,
-        "Accuracy": 1
-    },
-    {
         "Rating URL": "https://mediabiasfactcheck.com/revolver-news/",
         "URL": "revolver.news",
         "Country": "Unknown",
@@ -50148,13 +50085,6 @@
         "Accuracy": 3
     },
     {
-        "Rating URL": "https://mediabiasfactcheck.com/weekly-standard/",
-        "URL": "Dead",
-        "Country": "USA",
-        "Objective Reporting": 5,
-        "Accuracy": 3
-    },
-    {
         "Rating URL": "https://mediabiasfactcheck.com/weekly-world-news/",
         "URL": "weeklyworldnews.com",
         "Country": "USA",
@@ -51602,13 +51532,6 @@
         "Country": "USA",
         "Objective Reporting": 1,
         "Accuracy": 1
-    },
-    {
-        "Rating URL": "https://mediabiasfactcheck.com/world-affairs-journal/",
-        "URL": "Dead",
-        "Country": "USA",
-        "Objective Reporting": 5,
-        "Accuracy": 3
     },
     {
         "Rating URL": "https://mediabiasfactcheck.com/world-council-for-health-bias/",

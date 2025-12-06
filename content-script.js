@@ -54,7 +54,7 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
       Credibility: ${accuracyValue} / 3
     </span><br>
     <a href="#" class="go-to-source" style="color: #4ea3ff; text-decoration: underline; cursor: pointer;">
-      Rating source
+      Source
     </a>
   </span>
   <button class="media-close-btn" title="Close" 
