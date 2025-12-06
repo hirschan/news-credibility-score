@@ -1,14 +1,14 @@
 ### About
 
-The data is based on Media Bias Fact Check's ratings, and was last updated: 2025-12-02.
+The data is based on Media Bias Fact Check's (MBFC) ratings, and was last updated: 2025-12-02.
 
-Contains 9 934 news sources, where 8 969 (excluding Media Bias Fact Check) are live sources.
+Contains 9 934 news sources, where 8 969 (excluding Media Bias Fact Check itself) are live sources.
 
-#### Rating
+### Rating
 
 This extension uses factual rating classifications sourced from [mediabiasfactcheck.com](https://mediabiasfactcheck.com/). Ratings are transformed and mapped to numeric scales, and are not endorsed by MBFC.
 
-Numeric scoring is my own interpretation of MBFC’s publicly available rating categories. Transformed MBFC's ratings into:
+Numeric scoring is my own interpretation of MBFC’s publicly available rating categories:
 
 | Factual Reporting (MBFC Term) | Objective Reporting (This Project) |
 | ----------------------------- | ---------------------------------- |
