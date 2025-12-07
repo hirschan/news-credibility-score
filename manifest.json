@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Media Score",
-  "version": "1.0",
+  "version": "1.0.0",
   "description": "Shows credibility and factual reporting of a news site, using Media Bias Fact Check as a reference.",
   "icons": {
     "48": "media_score_icon.png"
@@ -28,7 +28,6 @@
   ],
   "browser_specific_settings": {
     "gecko": {
-      "id": "@extension-without-data-collection",
       "data_collection_permissions": {
         "required": [
           "none"

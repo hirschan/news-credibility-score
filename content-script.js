@@ -257,28 +257,69 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
       const flag = countryToFlag(match["Country"]);
 
       // Set badge content
-      badge.innerHTML = `
-<div style="display: flex; justify-content: space-between; align-items: center;">
-    <span style="font-size: 16px; margin-right: 6px;">
-      ${flag}
-    </span>
-  <span>
-    <span style="color: ${reportingColor}; font-weight: bold;">
-      ${reportingDisplay}
-    </span><br>
-    <span style="color: ${accuracyColor}; font-weight: bold;">
-      ${accuracyDisplay}
-    </span><br>
-    <a href="#" class="go-to-source" style="color: #4ea3ff; text-decoration: underline; cursor: pointer;">
-      Source
-    </a>
-  </span>
-  <button class="media-close-btn" title="Close" 
-          style="background:none;border:none;color:white;font-weight:bold;cursor:pointer;margin-left:10px;">
-    &times;
-  </button>
-</div>
-`;
+      // Create the wrapper
+      const wrapper = document.createElement("div");
+      wrapper.style.display = "flex";
+      wrapper.style.justifyContent = "space-between";
+      wrapper.style.alignItems = "center";
+
+      // Left section (flag + text)
+      const left = document.createElement("span");
+
+      // Flag element
+      const flagEl = document.createElement("span");
+      flagEl.style.fontSize = "16px";
+      flagEl.style.marginRight = "6px";
+      flagEl.textContent = flag; // SAFE
+      left.appendChild(flagEl);
+
+      // Reporting line
+      const reportingEl = document.createElement("span");
+      reportingEl.style.color = reportingColor;
+      reportingEl.style.fontWeight = "bold";
+      reportingEl.textContent = reportingDisplay; // SAFE
+      left.appendChild(reportingEl);
+
+      left.appendChild(document.createElement("br"));
+
+      // Accuracy line
+      const accuracyEl = document.createElement("span");
+      accuracyEl.style.color = accuracyColor;
+      accuracyEl.style.fontWeight = "bold";
+      accuracyEl.textContent = accuracyDisplay; // SAFE
+      left.appendChild(accuracyEl);
+
+      left.appendChild(document.createElement("br"));
+
+      // Source link
+      const sourceLink = document.createElement("a");
+      sourceLink.href = "#";
+      sourceLink.textContent = "Source";
+      sourceLink.className = "go-to-source";
+      sourceLink.style.color = "#4ea3ff";
+      sourceLink.style.textDecoration = "underline";
+      sourceLink.style.cursor = "pointer";
+      left.appendChild(sourceLink);
+
+      // Add left side
+      wrapper.appendChild(left);
+
+      // Close button
+      const closeBtn = document.createElement("button");
+      closeBtn.className = "media-close-btn";
+      closeBtn.title = "Close";
+      closeBtn.textContent = "×";
+      closeBtn.style.background = "none";
+      closeBtn.style.border = "none";
+      closeBtn.style.color = "white";
+      closeBtn.style.fontWeight = "bold";
+      closeBtn.style.cursor = "pointer";
+      closeBtn.style.marginLeft = "10px";
+      wrapper.appendChild(closeBtn);
+
+      // Insert wrapper
+      badge.appendChild(wrapper);
+
 
 
       // Styling badge
