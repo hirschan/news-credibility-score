@@ -1,37 +1,17 @@
 ### About
 
-The data is based on Media Bias Fact Check's (MBFC) ratings, and was last updated: 2025-12-02.
+* This extension uses factual rating classifications sourced from [mediabiasfactcheck.com](https://mediabiasfactcheck.com/) (MBFC). The dataset used in this project was last updated on 2025-12-02.
+* The data contains 9,934 news sources, of which 8,969 (excluding Media Bias/Fact Check itself) are currently active.
+* This web extension transforms MBFC’s publicly available rating categories into numeric scales for display purposes. All displayed scores are custom numeric interpretations derived from MBFC’s publicly available rating categories.
 
-Contains 9 934 news sources, where 8 969 (excluding Media Bias Fact Check itself) are live sources.
+### Disclaimer
 
-### Rating
+This project is not affiliated with, endorsed by, or approved by Media Bias/Fact Check (MBFC).
+MBFC retains full copyright over its ratings and classification data. This extension simply references MBFC’s publicly available information and presents it in a different, transformed format for educational and non-commercial use.
 
-This extension uses factual rating classifications sourced from [mediabiasfactcheck.com](https://mediabiasfactcheck.com/). Ratings are transformed and mapped to numeric scales, and are not endorsed by MBFC.
-
-Numeric scoring is my own interpretation of MBFC’s publicly available rating categories:
-
-| Factual Reporting (MBFC Term) | Objective Reporting (This Project) |
-| ----------------------------- | ---------------------------------- |
-| Very Low                      | 1                                  |
-| Low                           | 2                                  |
-| Mixed                         | 3                                  |
-| Mostly Factual                | 4                                  |
-| High                          | 5                                  |
-| Very High                     | 6                                  |
-| N/A                           | N/A                                |
-
-| Credibility (MBFC Term) | Accuracy (This Project) |
-| ----------------------- | ----------------------- |
-| Low                     | 1                       |
-| Medium                  | 2                       |
-| High                    | 3                       |
-| N/A                     | N/A                     |
+The ratings shown in this extension are not guarantees of accuracy, and I am not responsible for MBFC’s evaluations or conclusions. Users are strongly encouraged to perform their own fact-checking and consult multiple sources when evaluating news credibility.
 
 ### Credits
 
-This project uses news source ratings from **Media Bias/Fact Check (MBFC)** as a reference.  
-All ratings for **Objective Reporting** and **Accuracy** have been **transformed into custom labels** for this project.  
-
-Original MBFC ratings can be found at: [https://mediabiasfactcheck.com](https://mediabiasfactcheck.com)  
-
-This project is **not affiliated with MBFC** and is intended for **educational and non-commercial purposes** only.
+This project uses news source ratings from Media Bias/Fact Check (MBFC) as a reference.
+Original MBFC ratings can be found at: [mediabiasfactcheck.com](https://mediabiasfactcheck.com/)

@@ -1,8 +1,11 @@
 {
   "manifest_version": 2,
-  "name": "MediaScore",
+  "name": "Media Score",
   "version": "1.0",
   "description": "Shows credibility and factual reporting of a news site, using Media Bias Fact Check as a reference.",
+  "icons": {
+    "48": "media_score_icon.png"
+  },
   "permissions": [
     "tabs",
     "activeTab",
