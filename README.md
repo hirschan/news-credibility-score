@@ -15,3 +15,6 @@ The ratings shown in this extension are not guarantees of accuracy, and I am not
 
 This project uses news source ratings from Media Bias/Fact Check (MBFC) as a reference.
 Original MBFC ratings can be found at: [mediabiasfactcheck.com](https://mediabiasfactcheck.com/)
+
+This project includes an icon licensed under Apache License 2.0.
+[https://www.apache.org/licenses/LICENSE-2.0](https://www.apache.org/licenses/LICENSE-2.0)
