@@ -12,7 +12,6 @@ A browser extension that displays news and media reliability.
 <p align="center">
 <img src="https://img.shields.io/amo/users/news-credibility-score"/>
 <img src="https://img.shields.io/amo/dw/news-credibility-score"/>
-<img src="https://img.shields.io/github/issues/hirschan/news-credibility-score"/>
 </p>
 
 # About
