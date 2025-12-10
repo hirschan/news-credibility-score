@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Media Score",
+  "name": "News Credibility Score",
   "version": "1.0.0",
   "description": "Shows credibility and factual reporting of a news site, using Media Bias Fact Check as a reference.",
   "icons": {
