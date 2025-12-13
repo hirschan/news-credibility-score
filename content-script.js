@@ -263,21 +263,28 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
       wrapper.style.justifyContent = "space-between";
       wrapper.style.alignItems = "center";
 
-      // Left section (flag + text)
-      const left = document.createElement("span");
+      // Left section
+      const left = document.createElement("div");
 
       // Flag element
+      // Flag container (left column)
+      const flagWrapper = document.createElement("div");
+      flagWrapper.style.display = "flex";
+      flagWrapper.style.alignItems = "center";
+      flagWrapper.style.marginRight = "8px";
+
       const flagEl = document.createElement("span");
-      flagEl.style.fontSize = "16px";
-      flagEl.style.marginRight = "6px";
-      flagEl.textContent = flag; // SAFE
-      left.appendChild(flagEl);
+      flagEl.style.fontSize = "18px";
+      flagEl.textContent = flag;
+
+      flagWrapper.appendChild(flagEl);
+      wrapper.appendChild(flagWrapper);
 
       // Reporting line
       const reportingEl = document.createElement("span");
       reportingEl.style.color = reportingColor;
       reportingEl.style.fontWeight = "bold";
-      reportingEl.textContent = reportingDisplay; // SAFE
+      reportingEl.textContent = reportingDisplay;
       left.appendChild(reportingEl);
 
       left.appendChild(document.createElement("br"));
@@ -286,7 +293,7 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
       const accuracyEl = document.createElement("span");
       accuracyEl.style.color = accuracyColor;
       accuracyEl.style.fontWeight = "bold";
-      accuracyEl.textContent = accuracyDisplay; // SAFE
+      accuracyEl.textContent = accuracyDisplay;
       left.appendChild(accuracyEl);
 
       left.appendChild(document.createElement("br"));
