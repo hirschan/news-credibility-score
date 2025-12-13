@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/hirschan/news-credibility-score/blob/master/news_credibility_score_icon_large.png" width="150"/>
+  <img src="https://github.com/hirschan/news-credibility-score/blob/master/icon_large.png" width="150"/>
 </p>
 
 <h3 align="center">News Credibility Score on Firefox</h3>
