@@ -194,7 +194,7 @@ function countryToFlag(country) {
     "Vietnam": "🇻🇳",
     "Yemen": "🇾🇪",
     "Zambia": "🇿🇲",
-    "Zimbabwe": "🇿🇼"
+    "Zimbabwe": "🇿🇼",
   };
 
   return countryToEmojiFlag[country] || "";
@@ -207,15 +207,27 @@ const reportingColors = {
   3: "#ffeb3b",
   4: "#8bc34a",
   5: "#4caf50",
-  6: "#2e7d32"
+  6: "#2e7d32",
 };
 
 const accuracyColors = {
   "N/A": "#999",
   1: "#f44336",
   2: "#ffeb3b",
-  3: "#2e7d32"
+  3: "#2e7d32",
 };
+
+const angleColors = {
+  "Least Biased": "#2e7d32",
+  "Pro-Science": "#2e7d32",
+  "Left-Center": "#64b5f6",
+  "Right-Center": "#ff9800",
+  "Left": "#1976d2",
+  "Right": "#f44336",
+  "Questionable": "#ffeb3b",
+  "Conspiracy-Pseudoscience": "#b71c1c",
+  "Satire": "#7b1fa2",
+}
 
 // Get the current page hostname (web URL address)
 const hostname = window.location.hostname.replace(/^www\./, "").toLowerCase();
@@ -241,6 +253,7 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
       // Extract values
       const reportingValue = match["Objective Reporting"];
       const accuracyValue = match["Accuracy"];
+      const angleValue = match["Angle"]
 
       // Remove "/ 6" or "/ 3" if value is N/A
       const reportingDisplay = reportingValue === "N/A"
@@ -251,8 +264,11 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
         ? "Credibility: N/A"
         : `Credibility: ${accuracyValue} / 3`;
 
+      const angleDisplay = `Angle: ${angleValue}` 
+
       const reportingColor = reportingColors[reportingValue] || "#fff";
       const accuracyColor = accuracyColors[accuracyValue] || "#fff";
+      const angleColor = angleColors[angleValue] || "#fff";
 
       const flag = countryToFlag(match["Country"]);
 
@@ -280,7 +296,7 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
       flagWrapper.appendChild(flagEl);
       wrapper.appendChild(flagWrapper);
 
-      // Reporting line
+      // Factual Reporting line
       const reportingEl = document.createElement("span");
       reportingEl.style.color = reportingColor;
       reportingEl.style.fontWeight = "bold";
@@ -289,12 +305,21 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
 
       left.appendChild(document.createElement("br"));
 
-      // Accuracy line
+      // Credibility line
       const accuracyEl = document.createElement("span");
       accuracyEl.style.color = accuracyColor;
       accuracyEl.style.fontWeight = "bold";
       accuracyEl.textContent = accuracyDisplay;
       left.appendChild(accuracyEl);
+
+      left.appendChild(document.createElement("br"));
+
+      // Angle line
+      const angleEl = document.createElement("span");
+      angleEl.style.color = angleColor;
+      angleEl.textContent = angleDisplay
+      angleEl.style.fontWeight = "bold";
+      left.appendChild(angleEl);
 
       left.appendChild(document.createElement("br"));
 
