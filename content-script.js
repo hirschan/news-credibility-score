@@ -241,7 +241,7 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
     const match = data.find(item => {
       // Normalize JSON URL field
       const itemURL = item["URL"].replace(/^www\./, "").toLowerCase();
-      return hostname.endsWith(itemURL);
+      return hostname === itemURL || hostname.endsWith("." + itemURL);
     });
 
     if (match) {
