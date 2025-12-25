@@ -237,7 +237,7 @@ const angleColors = {
 const hostname = window.location.hostname.replace(/^www\./, "").toLowerCase();
 
 // ===============================
-// Request media data
+// Request media data from background.js
 // ===============================
 browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
   .then(data => {
@@ -276,7 +276,12 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
       boxShadow: "0 8px 24px rgba(0,0,0,0.45)",
       zIndex: "999999",
       overflow: "hidden",
+      lineHeight: "1.2",
+      display: "flex",
+      flexDirection: "column",
     });
+
+    const shadow = badge.attachShadow({ mode: 'open' }); // Prevent CSS bleed
 
     // ===============================
     // Header
@@ -292,40 +297,40 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
     });
 
     let isDragging = false;
-let startX, startY, startLeft, startTop;
+    let startX, startY, startLeft, startTop;
 
-header.style.cursor = "move";
+    header.style.cursor = "move";
 
-header.addEventListener("mousedown", e => {
-  isDragging = true;
+    header.addEventListener("mousedown", e => {
+      isDragging = true;
 
-  const rect = badge.getBoundingClientRect();
-  startX = e.clientX;
-  startY = e.clientY;
-  startLeft = rect.left;
-  startTop = rect.top;
+      const rect = badge.getBoundingClientRect();
+      startX = e.clientX;
+      startY = e.clientY;
+      startLeft = rect.left;
+      startTop = rect.top;
 
-  badge.style.left = `${startLeft}px`;
-  badge.style.top = `${startTop}px`;
-  badge.style.right = "auto";
-  badge.style.bottom = "auto";
+      badge.style.left = `${startLeft}px`;
+      badge.style.top = `${startTop}px`;
+      badge.style.right = "auto";
+      badge.style.bottom = "auto";
 
-  e.preventDefault();
-});
+      e.preventDefault();
+    });
 
-document.addEventListener("mousemove", e => {
-  if (!isDragging) return;
+    document.addEventListener("mousemove", e => {
+      if (!isDragging) return;
 
-  const dx = e.clientX - startX;
-  const dy = e.clientY - startY;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
 
-  badge.style.left = `${startLeft + dx}px`;
-  badge.style.top = `${startTop + dy}px`;
-});
+      badge.style.left = `${startLeft + dx}px`;
+      badge.style.top = `${startTop + dy}px`;
+    });
 
-document.addEventListener("mouseup", () => {
-  isDragging = false;
-});
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+    });
 
 
     const headerLeft = document.createElement("div");
@@ -381,8 +386,7 @@ document.addEventListener("mouseup", () => {
     reportingLabel.style.color = "#fff";
 
     const reportingValueEl = document.createElement("span");
-    reportingValueEl.textContent =
-    reportingValue === "N/A" ? "N/A" : `${reportingValue} / 6`;
+    reportingValueEl.textContent = reportingValue === "N/A" ? "N/A" : `${reportingValue} / 6`;
     reportingValueEl.style.color = reportingColors[reportingValue] || "#fff";
     reportingValueEl.style.fontWeight = "600";
 
@@ -396,8 +400,7 @@ document.addEventListener("mouseup", () => {
     accuracyLabel.style.color = "#fff";
 
     const accuracyValueEl = document.createElement("span");
-    accuracyValueEl.textContent =
-    accuracyValue === "N/A" ? "N/A" : `${accuracyValue} / 3`;
+    accuracyValueEl.textContent = accuracyValue === "N/A" ? "N/A" : `${accuracyValue} / 3`;
     accuracyValueEl.style.color = accuracyColors[accuracyValue] || "#fff";
     accuracyValueEl.style.fontWeight = "600";
 
@@ -447,6 +450,8 @@ document.addEventListener("mouseup", () => {
     // ===============================
     badge.appendChild(header);
     badge.appendChild(body);
+    shadow.appendChild(header);
+    shadow.appendChild(body);
     document.body.appendChild(badge);
   })
   .catch(err => console.error("Failed to get media data:", err));
