@@ -279,6 +279,7 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
       lineHeight: "1.2",
       display: "flex",
       flexDirection: "column",
+      border: "1px solid #fff",
     });
 
     const shadow = badge.attachShadow({ mode: 'open' }); // Prevent CSS bleed
