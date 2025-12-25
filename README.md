@@ -38,3 +38,6 @@ Original MBFC ratings can be found at: [mediabiasfactcheck.com](https://mediabia
 
 This project includes an icon licensed under Apache License 2.0.
 [https://www.apache.org/licenses/LICENSE-2.0](https://www.apache.org/licenses/LICENSE-2.0)
+
+# Buy Me A Coffee ☕
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/hirschan)
