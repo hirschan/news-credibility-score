@@ -20,6 +20,10 @@ A browser extension that displays news and media reliability.
 * The data contains 9,934 news sources, of which 8,969 (excluding Media Bias/Fact Check itself) are currently active.
 * This web extension transforms MBFC’s publicly available rating categories into numeric scales for display purposes. All displayed scores are custom numeric interpretations derived from MBFC’s publicly available rating categories.
 
+# Example
+
+<img src="https://github.com/hirschan/news-credibility-score/blob/master/bbc_example.png" alt="My Image" height="500">
+
 # Disclaimer
 
 This project is not affiliated with, endorsed by, or approved by Media Bias/Fact Check (MBFC).
