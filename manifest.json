@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "News Credibility Score",
   "version": "1.4.0",
   "description": "Shows credibility and factual reporting of a news site, using Media Bias Fact Check as a reference.",
@@ -8,13 +8,13 @@
   },
   "permissions": [
     "tabs",
-    "activeTab",
+    "activeTab"
+  ],
+  "host_permissions": [
     "<all_urls>"
   ],
   "background": {
-    "scripts": [
-      "background.js"
-    ]
+    "service_worker": "background.js"
   },
   "content_scripts": [
     {
@@ -25,14 +25,5 @@
         "content-script.js"
       ]
     }
-  ],
-  "browser_specific_settings": {
-    "gecko": {
-      "data_collection_permissions": {
-        "required": [
-          "none"
-        ]
-      }
-    }
-  }
+  ]
 }

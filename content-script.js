@@ -239,7 +239,7 @@ const hostname = window.location.hostname.replace(/^www\./, "").toLowerCase();
 // ===============================
 // Request media data from background.js
 // ===============================
-browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
+chrome.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
   .then(data => {
     if (!Array.isArray(data)) return;
 
@@ -435,7 +435,7 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
 
     sourceLink.addEventListener("click", e => {
       e.preventDefault();
-      browser.runtime.sendMessage({
+      chrome.runtime.sendMessage({
         type: "OPEN_SOURCE_URL",
         url: match["Rating URL"],
       });

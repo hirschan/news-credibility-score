@@ -1,7 +1,7 @@
 let mediaData = [];
 
 // Load JSON at extension startup
-fetch(browser.runtime.getURL("media_data.json"))
+fetch(chrome.runtime.getURL("media_data.json"))
   .then(response => response.json())
   .then(data => {
     mediaData = data;
@@ -10,14 +10,14 @@ fetch(browser.runtime.getURL("media_data.json"))
   .catch(err => console.error("Failed to load data:", err));
 
 // Listen for messages from content scripts
-browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === "GET_MEDIA_DATA") {
     // Wait until mediaData is loaded
     if (mediaData.length > 0) {
       sendResponse(mediaData);
     } else {
       // If JSON not yet loaded, wait a bit
-      fetch(browser.runtime.getURL("media_data.json"))
+      fetch(chrome.runtime.getURL("media_data.json"))
         .then(r => r.json())
         .then(data => {
           mediaData = data;
@@ -29,8 +29,8 @@ browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   }
 });
 
-browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   if (msg.type === "OPEN_SOURCE_URL") {
-    browser.tabs.create({ url: msg.url });
+    chrome.tabs.create({ url: msg.url });
   }
 });
