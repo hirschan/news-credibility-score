@@ -441,10 +441,26 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
       });
     });
 
+    const donateBtn = document.createElement("a");
+    donateBtn.textContent = "☕ Buy me a coffee";
+    donateBtn.href = "https://www.buymeacoffee.com/hirschan";
+    donateBtn.target = "_blank";
+    Object.assign(donateBtn.style, {
+      display: "block",
+      marginTop: "6px",
+      textDecoration: "none",
+      color: "#fff",
+      fontSize: "13px",
+      textAlign: "center",
+      cursor: "pointer",
+    });
+
+
     body.appendChild(reportingEl);
     body.appendChild(accuracyEl);
     body.appendChild(angleEl);
     body.appendChild(sourceLink);
+    body.appendChild(donateBtn);
 
     // ===============================
     // Assemble badge
