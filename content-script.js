@@ -1,4 +1,3 @@
-// Convert country name to emoji flag
 function countryToFlag(country) {
   if (!country) return "";
 
@@ -200,6 +199,9 @@ function countryToFlag(country) {
   return countryToEmojiFlag[country] || "";
 }
 
+// ===============================
+// Color maps
+// ===============================
 const reportingColors = {
   "N/A": "#999",
   1: "#f44336",
@@ -227,169 +229,224 @@ const angleColors = {
   "Questionable": "#ffeb3b",
   "Conspiracy-Pseudoscience": "#b71c1c",
   "Satire": "#7b1fa2",
-}
+};
 
-// Get the current page hostname (web URL address)
+// ===============================
+// Hostname normalization
+// ===============================
 const hostname = window.location.hostname.replace(/^www\./, "").toLowerCase();
 
-// Request media data from background.js
+// ===============================
+// Request media data
+// ===============================
 browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
   .then(data => {
-    if (!data || !Array.isArray(data)) return;
+    if (!Array.isArray(data)) return;
 
-    // Finds matching object in json data
     const match = data.find(item => {
-      // Normalize JSON URL field
       const itemURL = item["URL"].replace(/^www\./, "").toLowerCase();
       return hostname === itemURL || hostname.endsWith("." + itemURL);
     });
 
-    if (match) {
+    if (!match) return;
 
-      // Create the badge
-      const badge = document.createElement("div");
-      badge.className = "media-badge";
+    // ===============================
+    // Extract values
+    // ===============================
+    const reportingValue = match["Objective Reporting"];
+    const accuracyValue = match["Accuracy"];
+    const angleValue = match["Angle"];
 
-      // Extract values
-      const reportingValue = match["Objective Reporting"];
-      const accuracyValue = match["Accuracy"];
-      const angleValue = match["Angle"]
+    const flag = countryToFlag(match["Country"]);
 
-      // Remove "/ 6" or "/ 3" if value is N/A
-      const reportingDisplay = reportingValue === "N/A"
-        ? "Factual Reporting: N/A"
-        : `Factual Reporting: ${reportingValue} / 6`;
+    // ===============================
+    // Badge container
+    // ===============================
+    const badge = document.createElement("div");
+    Object.assign(badge.style, {
+      position: "fixed",
+      bottom: "20px",
+      right: "20px",
+      width: "280px",
+      backgroundColor: "#111",
+      color: "#fff",
+      borderRadius: "10px",
+      fontFamily: "system-ui, sans-serif",
+      fontSize: "14px",
+      boxShadow: "0 8px 24px rgba(0,0,0,0.45)",
+      zIndex: "999999",
+      overflow: "hidden",
+    });
 
-      const accuracyDisplay = accuracyValue === "N/A"
-        ? "Credibility: N/A"
-        : `Credibility: ${accuracyValue} / 3`;
+    // ===============================
+    // Header
+    // ===============================
+    const header = document.createElement("div");
+    Object.assign(header.style, {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: "10px 12px",
+      backgroundColor: "#18181b",
+      borderBottom: "1px solid #2a2a2a",
+    });
 
-      const angleDisplay = `Angle: ${angleValue}` 
+    let isDragging = false;
+let startX, startY, startLeft, startTop;
 
-      const reportingColor = reportingColors[reportingValue] || "#fff";
-      const accuracyColor = accuracyColors[accuracyValue] || "#fff";
-      const angleColor = angleColors[angleValue] || "#fff";
+header.style.cursor = "move";
 
-      const flag = countryToFlag(match["Country"]);
+header.addEventListener("mousedown", e => {
+  isDragging = true;
 
-      // Set badge content
-      // Create the wrapper
-      const wrapper = document.createElement("div");
-      wrapper.style.display = "flex";
-      wrapper.style.justifyContent = "space-between";
-      wrapper.style.alignItems = "center";
+  const rect = badge.getBoundingClientRect();
+  startX = e.clientX;
+  startY = e.clientY;
+  startLeft = rect.left;
+  startTop = rect.top;
 
-      // Left section
-      const left = document.createElement("div");
+  badge.style.left = `${startLeft}px`;
+  badge.style.top = `${startTop}px`;
+  badge.style.right = "auto";
+  badge.style.bottom = "auto";
 
-      // Flag element
-      // Flag container (left column)
-      const flagWrapper = document.createElement("div");
-      flagWrapper.style.display = "flex";
-      flagWrapper.style.alignItems = "center";
-      flagWrapper.style.marginRight = "8px";
+  e.preventDefault();
+});
 
-      const flagEl = document.createElement("span");
-      flagEl.style.fontSize = "18px";
-      flagEl.textContent = flag;
+document.addEventListener("mousemove", e => {
+  if (!isDragging) return;
 
-      flagWrapper.appendChild(flagEl);
-      wrapper.appendChild(flagWrapper);
+  const dx = e.clientX - startX;
+  const dy = e.clientY - startY;
 
-      // Factual Reporting line
-      const reportingEl = document.createElement("span");
-      reportingEl.style.color = reportingColor;
-      reportingEl.style.fontWeight = "bold";
-      reportingEl.textContent = reportingDisplay;
-      left.appendChild(reportingEl);
+  badge.style.left = `${startLeft + dx}px`;
+  badge.style.top = `${startTop + dy}px`;
+});
 
-      left.appendChild(document.createElement("br"));
-
-      // Credibility line
-      const accuracyEl = document.createElement("span");
-      accuracyEl.style.color = accuracyColor;
-      accuracyEl.style.fontWeight = "bold";
-      accuracyEl.textContent = accuracyDisplay;
-      left.appendChild(accuracyEl);
-
-      left.appendChild(document.createElement("br"));
-
-      // Angle line
-      const angleEl = document.createElement("span");
-      angleEl.style.color = angleColor;
-      angleEl.textContent = angleDisplay
-      angleEl.style.fontWeight = "bold";
-      left.appendChild(angleEl);
-
-      left.appendChild(document.createElement("br"));
-
-      // Source link
-      const sourceLink = document.createElement("a");
-      sourceLink.href = "#";
-      sourceLink.textContent = "Source";
-      sourceLink.className = "go-to-source";
-      sourceLink.style.color = "#4ea3ff";
-      sourceLink.style.textDecoration = "underline";
-      sourceLink.style.cursor = "pointer";
-      left.appendChild(sourceLink);
-
-      // Add left side
-      wrapper.appendChild(left);
-
-      // Close button
-      const closeBtn = document.createElement("button");
-      closeBtn.className = "media-close-btn";
-      closeBtn.title = "Close";
-      closeBtn.textContent = "×";
-      closeBtn.style.background = "none";
-      closeBtn.style.border = "none";
-      closeBtn.style.color = "white";
-      closeBtn.style.fontWeight = "bold";
-      closeBtn.style.cursor = "pointer";
-      closeBtn.style.marginLeft = "10px";
-      wrapper.appendChild(closeBtn);
-
-      // Insert wrapper
-      badge.appendChild(wrapper);
+document.addEventListener("mouseup", () => {
+  isDragging = false;
+});
 
 
+    const headerLeft = document.createElement("div");
+    Object.assign(headerLeft.style, {
+      display: "flex",
+      alignItems: "center",
+      gap: "8px",
+    });
 
-      // Styling badge
-      Object.assign(badge.style, {
-        position: "fixed",
-        bottom: "20px",
-        right: "20px",
-        backgroundColor: "#222",
-        color: "#fff",
-        padding: "8px 12px",
-        borderRadius: "6px",
-        fontSize: "14px",
-        fontFamily: "sans-serif",
-        zIndex: "999999",
-        boxShadow: "0 2px 10px rgba(0,0,0,0.3)",
-        boxSizing: "border-box",
-        lineHeight: "1.2",
+    const flagEl = document.createElement("span");
+    flagEl.textContent = flag;
+    flagEl.style.fontSize = "18px";
+
+    const titleEl = document.createElement("span");
+    titleEl.textContent = "News Source Analysis";
+    titleEl.style.fontWeight = "600";
+    titleEl.style.color = "#fff";
+
+    headerLeft.appendChild(flagEl);
+    headerLeft.appendChild(titleEl);
+
+    const closeBtn = document.createElement("button");
+    closeBtn.textContent = "×";
+    Object.assign(closeBtn.style, {
+      background: "none",
+      border: "none",
+      color: "#fff",
+      fontSize: "18px",
+      cursor: "pointer",
+      lineHeight: "1",
+    });
+
+    closeBtn.addEventListener("click", () => badge.remove());
+
+    header.appendChild(headerLeft);
+    header.appendChild(closeBtn);
+
+    // ===============================
+    // Body
+    // ===============================
+    const body = document.createElement("div");
+    Object.assign(body.style, {
+      padding: "12px",
+      display: "flex",
+      flexDirection: "column",
+      gap: "6px",
+    });
+
+    const reportingEl = document.createElement("div");
+
+    const reportingLabel = document.createElement("span");
+    reportingLabel.textContent = "Factual Reporting: ";
+    reportingLabel.style.color = "#fff";
+
+    const reportingValueEl = document.createElement("span");
+    reportingValueEl.textContent =
+    reportingValue === "N/A" ? "N/A" : `${reportingValue} / 6`;
+    reportingValueEl.style.color = reportingColors[reportingValue] || "#fff";
+    reportingValueEl.style.fontWeight = "600";
+
+    reportingEl.appendChild(reportingLabel);
+    reportingEl.appendChild(reportingValueEl);
+
+    const accuracyEl = document.createElement("div");
+
+    const accuracyLabel = document.createElement("span");
+    accuracyLabel.textContent = "Credibility: ";
+    accuracyLabel.style.color = "#fff";
+
+    const accuracyValueEl = document.createElement("span");
+    accuracyValueEl.textContent =
+    accuracyValue === "N/A" ? "N/A" : `${accuracyValue} / 3`;
+    accuracyValueEl.style.color = accuracyColors[accuracyValue] || "#fff";
+    accuracyValueEl.style.fontWeight = "600";
+
+    accuracyEl.appendChild(accuracyLabel);
+    accuracyEl.appendChild(accuracyValueEl);;
+
+    const angleEl = document.createElement("div");
+
+    const angleLabel = document.createElement("span");
+    angleLabel.textContent = "Angle: ";
+    angleLabel.style.color = "#fff";
+
+    const angleValueEl = document.createElement("span");
+    angleValueEl.textContent = angleValue;
+    angleValueEl.style.color = angleColors[angleValue] || "#fff";
+    angleValueEl.style.fontWeight = "600";
+
+    angleEl.appendChild(angleLabel);
+    angleEl.appendChild(angleValueEl);
+
+    const sourceLink = document.createElement("a");
+    sourceLink.textContent = "View source";
+    sourceLink.href = "#";
+    Object.assign(sourceLink.style, {
+      marginTop: "6px",
+      color: "#4ea3ff",
+      textDecoration: "underline",
+      cursor: "pointer",
+      fontSize: "13px",
+    });
+
+    sourceLink.addEventListener("click", e => {
+      e.preventDefault();
+      browser.runtime.sendMessage({
+        type: "OPEN_SOURCE_URL",
+        url: match["Rating URL"],
       });
+    });
 
-      // Append to the page and add event listener for the close button
-      badge.querySelector(".media-close-btn").addEventListener("click", () => {
-        badge.remove();
-      });
+    body.appendChild(reportingEl);
+    body.appendChild(accuracyEl);
+    body.appendChild(angleEl);
+    body.appendChild(sourceLink);
 
-      // Open source link functionality
-      badge.querySelector(".go-to-source").addEventListener("click", (e) => {
-        e.preventDefault();
-        browser.runtime.sendMessage({
-          type: "OPEN_SOURCE_URL",
-          url: match["Rating URL"]
-        });
-      });
-
-      // Append badge to the page
-      document.body.appendChild(badge);
-      return badge;
-    } else {
-      console.log("No media data found for this site.");
-    }
+    // ===============================
+    // Assemble badge
+    // ===============================
+    badge.appendChild(header);
+    badge.appendChild(body);
+    document.body.appendChild(badge);
   })
   .catch(err => console.error("Failed to get media data:", err));
