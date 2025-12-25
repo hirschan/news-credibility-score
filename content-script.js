@@ -268,7 +268,7 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
       bottom: "20px",
       right: "20px",
       width: "280px",
-      backgroundColor: "#111",
+      backgroundColor: "#18181b",
       color: "#fff",
       borderRadius: "10px",
       fontFamily: "system-ui, sans-serif",
@@ -293,7 +293,7 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
       alignItems: "center",
       justifyContent: "space-between",
       padding: "10px 12px",
-      backgroundColor: "#18181b",
+      backgroundColor: "#2a2a2a",
       borderBottom: "1px solid #2a2a2a",
     });
 
