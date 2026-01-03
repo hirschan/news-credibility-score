@@ -1,14 +1,11 @@
 {
   "manifest_version": 3,
   "name": "News Source Analysis",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Shows an analysis and factual reporting of a news site, using Media Bias Fact Check as a reference.",
   "icons": {
     "48": "icon.png"
   },
-  "permissions": [
-    "tabs"
-  ],
   "host_permissions": [
     "<all_urls>"
   ],
