@@ -2,16 +2,17 @@
   <img src="https://github.com/hirschan/news-credibility-score/blob/master/icon_large.png" width="150"/>
 </p>
 
-<h3 align="center">News Credibility Score on Firefox</h3>
+<h3 align="center">News Source Analysis (Firefox & Chrome)</h3>
 <p align="center">
 A browser extension that displays news and media reliability.
-  <a href="https://addons.mozilla.org/en-US/firefox/addon/news-credibility-score/"><strong>Download »</strong></a>
+  <a href="https://addons.mozilla.org/en-US/firefox/addon/news-source-analysis/"><strong>Download Firefox »</strong></a>
+    <a href="https://chromewebstore.google.com/detail/news-source-analysis/anhdgdlniaicemfpknfaehjfhpliipph"><strong>Download Chrome »</strong></a>
 </p>
 
 
 <p align="center">
-<img src="https://img.shields.io/amo/users/news-credibility-score"/>
-<img src="https://img.shields.io/amo/dw/news-credibility-score"/>
+<img src="https://img.shields.io/amo/users/news-source-analysis"/>
+<img src="https://img.shields.io/amo/dw/news-source-analysis"/>
 </p>
 
 # About
