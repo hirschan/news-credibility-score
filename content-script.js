@@ -223,6 +223,8 @@ const angleColors = {
   "Least Biased": "#2e7d32",
   "Pro-Science": "#2e7d32",
   "Left-Center": "#64b5f6",
+  "Center": "#9e9e9e", // Specific for Allsides
+  "Allsides": "#9e9e9e", // Specific for Allsides
   "Right-Center": "#ff9800",
   "Left": "#1976d2",
   "Right": "#f44336",
@@ -237,27 +239,36 @@ const angleColors = {
 const hostname = window.location.hostname.replace(/^www\./, "").toLowerCase();
 
 // ===============================
-// Request media data from background.js
+// Request MBFC and AllSides data from background.js
 // ===============================
-browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
-  .then(data => {
-    if (!Array.isArray(data)) return;
+Promise.all([
+  browser.runtime.sendMessage({ type: "GET_MBFC_DATA" }),
+  browser.runtime.sendMessage({ type: "GET_ALLSIDES_DATA" })
+])
+  .then(([mbfcData, allsidesData]) => {
+    if (!Array.isArray(mbfcData) || !Array.isArray(allsidesData)) return;
 
-    const match = data.find(item => {
+    const hostnameNormalized = window.location.hostname.replace(/^www\./, "").toLowerCase();
+
+    // Find MBFC data for news site
+    const mbfcMatch = mbfcData.find(item => {
       const itemURL = item["URL"].replace(/^www\./, "").toLowerCase();
-      return hostname === itemURL || hostname.endsWith("." + itemURL);
+      return hostnameNormalized === itemURL || hostnameNormalized.endsWith("." + itemURL);
     });
 
-    if (!match) return;
+    if (!mbfcMatch) return;
 
-    // ===============================
-    // Extract values
-    // ===============================
-    const reportingValue = match["Objective Reporting"];
-    const accuracyValue = match["Accuracy"];
-    const angleValue = match["Angle"];
+    // Find AllSides data for news site
+    const allsidesMatch = allsidesData.find(item => {
+      const itemURL = item["URL"].replace(/^www\./, "").toLowerCase()
+      return hostnameNormalized === itemURL || hostnameNormalized.endsWith("." + itemURL);
+    });
 
-    const flag = countryToFlag(match["Country"]);
+    const reportingValue = mbfcMatch["Objective Reporting"];
+    const accuracyValue = mbfcMatch["Accuracy"];
+    const angleMBFC = mbfcMatch["Angle"];
+    const angleAllSides = allsidesMatch ? allsidesMatch["Angle"] : null;
+    const flag = countryToFlag(mbfcMatch["Country"]);
 
     // ===============================
     // Badge container
@@ -267,7 +278,7 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
       position: "fixed",
       bottom: "20px",
       right: "20px",
-      width: "280px",
+      width: "250px",
       backgroundColor: "#18181b",
       color: "#fff",
       borderRadius: "10px",
@@ -295,8 +306,12 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
       padding: "10px 12px",
       backgroundColor: "#2a2a2a",
       borderBottom: "1px solid #2a2a2a",
+      cursor: "move",
     });
 
+    // ===============================
+    // Drag n drop functionality
+    // ===============================
     let isDragging = false;
     let startX, startY, startLeft, startTop;
 
@@ -333,39 +348,21 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
       isDragging = false;
     });
 
-
     const headerLeft = document.createElement("div");
-    Object.assign(headerLeft.style, {
-      display: "flex",
-      alignItems: "center",
-      gap: "8px",
-    });
-
+    Object.assign(headerLeft.style, { display: "flex", alignItems: "center", gap: "8px" });
     const flagEl = document.createElement("span");
     flagEl.textContent = flag;
     flagEl.style.fontSize = "18px";
-
     const titleEl = document.createElement("span");
     titleEl.textContent = "News Source Analysis";
     titleEl.style.fontWeight = "600";
     titleEl.style.color = "#fff";
-
     headerLeft.appendChild(flagEl);
     headerLeft.appendChild(titleEl);
-
     const closeBtn = document.createElement("button");
     closeBtn.textContent = "×";
-    Object.assign(closeBtn.style, {
-      background: "none",
-      border: "none",
-      color: "#fff",
-      fontSize: "18px",
-      cursor: "pointer",
-      lineHeight: "1",
-    });
-
+    Object.assign(closeBtn.style, { background: "none", border: "none", color: "#fff", fontSize: "18px", cursor: "pointer" });
     closeBtn.addEventListener("click", () => badge.remove());
-
     header.appendChild(headerLeft);
     header.appendChild(closeBtn);
 
@@ -373,102 +370,97 @@ browser.runtime.sendMessage({ type: "GET_MEDIA_DATA" })
     // Body
     // ===============================
     const body = document.createElement("div");
-    Object.assign(body.style, {
-      padding: "12px",
-      display: "flex",
-      flexDirection: "column",
-      gap: "6px",
-    });
+    Object.assign(body.style, { padding: "12px", display: "flex", flexDirection: "column", gap: "6px" });
 
-    const reportingEl = document.createElement("div");
+    function createRow(labelText, value, colors, max) {
+      const row = document.createElement("div");
+      const label = document.createElement("span");
+      label.textContent = labelText;
+      label.style.color = "#fff";
+      const valueEl = document.createElement("span");
+      valueEl.textContent = value === "N/A" ? "N/A" : (max ? `${value} / ${max}` : value);
+      valueEl.style.color = colors[value] || "#fff";
+      valueEl.style.fontWeight = "600";
+      row.appendChild(label);
+      row.appendChild(valueEl);
+      return row;
+    }
 
-    const reportingLabel = document.createElement("span");
-    reportingLabel.textContent = "Factual Reporting: ";
-    reportingLabel.style.color = "#fff";
+    body.appendChild(createRow("Factual Reporting (MBFC): ", reportingValue, reportingColors, 6));
+    body.appendChild(createRow("Credibility (MBFC): ", accuracyValue, accuracyColors, 3));
+    body.appendChild(createRow("Angle (MBFC): ", angleMBFC, angleColors));
 
-    const reportingValueEl = document.createElement("span");
-    reportingValueEl.textContent = reportingValue === "N/A" ? "N/A" : `${reportingValue} / 6`;
-    reportingValueEl.style.color = reportingColors[reportingValue] || "#fff";
-    reportingValueEl.style.fontWeight = "600";
+    // Only show AllSides angle if it exists
+    if (angleAllSides) {
+      body.appendChild(createRow("Angle (AllSides): ", angleAllSides, angleColors));
+    }
 
-    reportingEl.appendChild(reportingLabel);
-    reportingEl.appendChild(reportingValueEl);
-
-    const accuracyEl = document.createElement("div");
-
-    const accuracyLabel = document.createElement("span");
-    accuracyLabel.textContent = "Credibility: ";
-    accuracyLabel.style.color = "#fff";
-
-    const accuracyValueEl = document.createElement("span");
-    accuracyValueEl.textContent = accuracyValue === "N/A" ? "N/A" : `${accuracyValue} / 3`;
-    accuracyValueEl.style.color = accuracyColors[accuracyValue] || "#fff";
-    accuracyValueEl.style.fontWeight = "600";
-
-    accuracyEl.appendChild(accuracyLabel);
-    accuracyEl.appendChild(accuracyValueEl);;
-
-    const angleEl = document.createElement("div");
-
-    const angleLabel = document.createElement("span");
-    angleLabel.textContent = "Angle: ";
-    angleLabel.style.color = "#fff";
-
-    const angleValueEl = document.createElement("span");
-    angleValueEl.textContent = angleValue;
-    angleValueEl.style.color = angleColors[angleValue] || "#fff";
-    angleValueEl.style.fontWeight = "600";
-
-    angleEl.appendChild(angleLabel);
-    angleEl.appendChild(angleValueEl);
-
-    const sourceLink = document.createElement("a");
-    sourceLink.textContent = "View source";
-    sourceLink.href = "#";
-    Object.assign(sourceLink.style, {
+    // ===============================
+    // Source links (same line)
+    // ===============================
+    const linksContainer = document.createElement("div");
+    Object.assign(linksContainer.style, {
       marginTop: "6px",
-      color: "#4ea3ff",
-      textDecoration: "underline",
-      cursor: "pointer",
       fontSize: "13px",
     });
 
-    sourceLink.addEventListener("click", e => {
+    const sourceLinkMBFC = document.createElement("a");
+    sourceLinkMBFC.textContent = "MBFC";
+    sourceLinkMBFC.href = "#";
+    Object.assign(sourceLinkMBFC.style, {
+      color: "#4ea3ff",
+      textDecoration: "underline",
+      cursor: "pointer",
+    });
+    sourceLinkMBFC.addEventListener("click", e => {
       e.preventDefault();
       browser.runtime.sendMessage({
         type: "OPEN_SOURCE_URL",
-        url: match["Rating URL"],
+        url: mbfcMatch["Rating URL"],
       });
     });
+
+    linksContainer.appendChild(sourceLinkMBFC);
+
+    // Only show AllSides link if it exists
+    if (allsidesMatch && allsidesMatch["Rating URL"]) {
+      const separator = document.createTextNode(", ");
+      linksContainer.appendChild(separator);
+
+      const sourceLinkAllsides = document.createElement("a");
+      sourceLinkAllsides.textContent = "AllSides";
+      sourceLinkAllsides.href = "#";
+      Object.assign(sourceLinkAllsides.style, {
+        color: "#4ea3ff",
+        textDecoration: "underline",
+        cursor: "pointer",
+      });
+      sourceLinkAllsides.addEventListener("click", e => {
+        e.preventDefault();
+        browser.runtime.sendMessage({
+          type: "OPEN_SOURCE_URL",
+          url: allsidesMatch["Rating URL"],
+        });
+      });
+
+      linksContainer.appendChild(sourceLinkAllsides);
+    }
+
+    body.appendChild(linksContainer);
 
     const donateBtn = document.createElement("a");
     donateBtn.textContent = "☕ Buy me a coffee";
     donateBtn.href = "https://www.buymeacoffee.com/hirschan";
     donateBtn.target = "_blank";
-    Object.assign(donateBtn.style, {
-      display: "block",
-      marginTop: "6px",
-      textDecoration: "none",
-      color: "#fff",
-      fontSize: "13px",
-      textAlign: "center",
-      cursor: "pointer",
-    });
-
-
-    body.appendChild(reportingEl);
-    body.appendChild(accuracyEl);
-    body.appendChild(angleEl);
-    body.appendChild(sourceLink);
+    Object.assign(donateBtn.style, { display: "block", marginTop: "6px", textDecoration: "none", color: "#fff", fontSize: "13px", textAlign: "center", cursor: "pointer" });
     body.appendChild(donateBtn);
 
     // ===============================
     // Assemble badge
     // ===============================
-    badge.appendChild(header);
-    badge.appendChild(body);
     shadow.appendChild(header);
     shadow.appendChild(body);
     document.body.appendChild(badge);
+
   })
   .catch(err => console.error("Failed to get media data:", err));

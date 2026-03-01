@@ -1,35 +1,27 @@
-let mediaData = [];
+let mbfcData = [];
+let allsidesData = [];
 
-// Load JSON at extension startup
-fetch(browser.runtime.getURL("media_data.json"))
-  .then(response => response.json())
-  .then(data => {
-    mediaData = data;
-    console.log("Data loaded in background:", mediaData);
-  })
-  .catch(err => console.error("Failed to load data:", err));
+async function loadData() {
+  try {
+    const [mbfcResponse, allsidesResponse] = await Promise.all([
+      fetch(browser.runtime.getURL("data/mbfc_data_converted.json")),
+      fetch(browser.runtime.getURL("data/allsides_data_converted.json"))
+    ]);
 
-// Listen for messages from content scripts
-browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  if (msg.type === "GET_MEDIA_DATA") {
-    // Wait until mediaData is loaded
-    if (mediaData.length > 0) {
-      sendResponse(mediaData);
-    } else {
-      // If JSON not yet loaded, wait a bit
-      fetch(browser.runtime.getURL("media_data.json"))
-        .then(r => r.json())
-        .then(data => {
-          mediaData = data;
-          sendResponse(mediaData);
-        })
-        .catch(err => console.error(err));
-    }
-    return true;
+    mbfcData = mbfcResponse.json();
+    allsidesData = allsidesResponse.json();
+
+  } catch (err) {
+    console.error("Failed to load data:", err);
   }
-});
+}
+
+loadData();
 
 browser.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  if (msg.type === "GET_MBFC_DATA") sendResponse(mbfcData);
+  if (msg.type === "GET_ALLSIDES_DATA") sendResponse(allsidesData);
+
   if (msg.type === "OPEN_SOURCE_URL") {
     browser.tabs.create({ url: msg.url });
   }
