@@ -23,7 +23,7 @@ A browser extension that displays news and media reliability.
 
 # Example
 
-<img src="https://github.com/hirschan/news-credibility-score/blob/master/bbc_example.png" alt="My Image" height="500">
+<img src="https://github.com/hirschan/news-credibility-score/blob/master/abc_news.png" alt="ABC News" height="500">
 
 # Disclaimer
 
