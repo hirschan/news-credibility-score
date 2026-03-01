@@ -17417,7 +17417,7 @@
     },
     {
         "Rating URL": "https://mediabiasfactcheck.com/abc-news/",
-        "URL": "abcnews.go.com",
+        "URL": "abcnews.com",
         "Country": "USA",
         "Objective Reporting": 5,
         "Accuracy": 3,
@@ -71477,7 +71477,7 @@
         "Country": "USA",
         "Objective Reporting": 2,
         "Accuracy": 1,
-        "Angle": "Conspiracy-Pseudoscience"
+        "Angle": "Conspiracy-Pseuscience"
     },
     {
         "Rating URL": "https://mediabiasfactcheck.com/uc-berkeley-school-of-public-health-bias-and-credibility/",
